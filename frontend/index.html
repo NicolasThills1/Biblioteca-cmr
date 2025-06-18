@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Biblioteca do Colégio Militar do Recife</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Biblioteca do Colégio Militar do Recife</h1>
+                        <p>Sistema Integrado de Acesso</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <div class="container">
+            <div class="login-card">
+                <div class="military-badge">
+                    <i class="fas fa-shield-alt"></i> ACESSO RESTRITO
+                </div>
+                
+                <div class="login-header">
+                    <div class="login-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h2>Acesso à Biblioteca</h2>
+                    <p>Selecione seu perfil e informe suas credenciais</p>
+                </div>
+                
+                <div id="alunoMessage" class="welcome-message aluno-message">
+                    <i class="fas fa-user-graduate"></i> Acesso ao sistema de reservas e consultas
+                </div>
+                <div id="adminMessage" class="welcome-message admin-message">
+                    <i class="fas fa-cogs"></i> Acesso ao painel administrativo completo
+                </div>
+                
+                <div class="user-type-selector">
+                    <div class="user-type active" id="alunoType">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Aluno</span>
+                    </div>
+                    <div class="user-type" id="adminType">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Administrador</span>
+                    </div>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label id="usernameLabel" for="username">Matrícula</label>
+                        <div class="input-with-icon">
+                            <i id="userIcon" class="fas fa-id-card"></i>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="Digite sua matrícula" required>
+                        </div>
+                        <div id="username-error" class="error-message">Por favor, insira sua matrícula</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Digite sua senha" required>
+                        </div>
+                        <div id="password-error" class="error-message">Por favor, insira sua senha</div>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> ACESSAR SISTEMA
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Colégio Militar do Recife</h3>
+                    <p>Educação, Disciplina e Cidadania</p>
+                    <p>Rua do Sol, 100 - Recife Antigo</p>
+                    <p>Recife - PE, CEP: 50030-000</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Horário de Funcionamento</h3>
+                    <p>Segunda a Sexta: 7h às 18h</p>
+                    <p>Sábado: 8h às 12h</p>
+                    <p>Domingo: Fechado</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-phone"></i> (81) 3224-0000</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> biblioteca@cmr.edu.br</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 Colégio Militar do Recife. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Elementos do DOM
+        const alunoType = document.getElementById('alunoType');
+        const adminType = document.getElementById('adminType');
+        const usernameLabel = document.getElementById('usernameLabel');
+        const usernameInput = document.getElementById('username');
+        const userIcon = document.getElementById('userIcon');
+        const alunoMessage = document.getElementById('alunoMessage');
+        const adminMessage = document.getElementById('adminMessage');
+        
+        // Configurações para cada tipo de usuário
+        const userTypes = {
+            aluno: {
+                label: "Matrícula",
+                placeholder: "Digite sua matrícula",
+                icon: "fas fa-id-card",
+                message: alunoMessage
+            },
+            admin: {
+                label: "Usuário",
+                placeholder: "Digite seu usuário administrativo",
+                icon: "fas fa-user-cog",
+                message: adminMessage
+            }
+        };
+        
+        // Função para atualizar a interface conforme o tipo de usuário
+        function updateUserType(type) {
+            alunoType.classList.toggle('active', type === 'aluno');
+            adminType.classList.toggle('active', type === 'admin');
+            
+            const config = userTypes[type];
+            usernameLabel.textContent = config.label;
+            usernameInput.placeholder = config.placeholder;
+            userIcon.className = config.icon;
+            
+            alunoMessage.style.display = type === 'aluno' ? 'block' : 'none';
+            adminMessage.style.display = type === 'admin' ? 'block' : 'none';
+        }
+        
+        // Event Listeners para o seletor de tipo de usuário
+        alunoType.addEventListener('click', () => updateUserType('aluno'));
+        adminType.addEventListener('click', () => updateUserType('admin'));
+        
+        // Validação do formulário e envio
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            document.getElementById('username-error').style.display = 'none';
+            document.getElementById('password-error').style.display = 'none';
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            let isValid = true;
+            
+            if (!username) {
+                document.getElementById('username-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!password) {
+                document.getElementById('password-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            const userType = adminType.classList.contains('active') ? 'admin' : 'aluno';
+            const apiUrl = userType === 'admin' ? 
+                '/api/admin/login/' : 
+                '/api/aluno/login/';
+            
+            const submitBtn = document.querySelector('.btn-login');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AUTENTICANDO...';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = 'https://www.google.com/';
+                } else {
+                    alert(`Erro: ${data.error || 'Credenciais inválidas'}`);
+                }
+            } catch (error) {
+                alert('Erro na conexão com o servidor');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Função para obter o token CSRF
+        function getCSRFToken() {
+            const cookieValue = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrftoken='))
+                ?.split('=')[1];
+            return cookieValue;
+        }
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUserType('aluno');
+        });
+    </script>
+</body>
+</html>
