@@ -1,2 +1,3 @@
-# Biblioteca-cmr
-Biblioteca
+# Biblioteca CMR
+
+Projeto com frontend e backend separados.
