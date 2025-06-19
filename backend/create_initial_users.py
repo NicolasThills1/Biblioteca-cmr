@@ -1,31 +1,40 @@
 import os
 import django
+import sys
 
+# Adiciona o diretório pai ao path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'biblioteca.settings')
 django.setup()
 
+from django.contrib.auth.hashers import make_password
 from usuarios.models import MilitarUser
 
 def create_users():
-    # Alunos -- ADICIONAR AQUI OS ALUNOS!!!!!!!!!!!
-    aluno1 = MilitarUser.objects.create_user(
+    # Verifica se os usuários já existem
+    if MilitarUser.objects.filter(matricula='170021').exists():
+        print("Usuários já existem. Nada a fazer.")
+        return
+
+    # Alunos
+    MilitarUser.objects.create(
         matricula='170021',
-        password='TestandoTestando',
+        password=make_password('TestandoTestando'),
         nome_completo='Nicolas Lacerda',
         tipo='aluno'
     )
     
-    aluno2 = MilitarUser.objects.create_user(
+    MilitarUser.objects.create(
         matricula='008982',
-        password='TestandoNovamente',
+        password=make_password('TestandoNovamente'),
         nome_completo='Mariana Lacerda',
         tipo='aluno'
     )
     
     # Administrador
-    admin = MilitarUser.objects.create_user(
+    MilitarUser.objects.create(
         matricula='CMRBOOK1221',
-        password='18062025',
+        password=make_password('18062025'),
         nome_completo='Administrador do Sistema',
         tipo='admin',
         is_staff=True
