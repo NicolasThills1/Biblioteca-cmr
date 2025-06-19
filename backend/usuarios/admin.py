@@ -1,20 +1,17 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import MilitarUser
+from .models import Usuario
 
-class MilitarUserAdmin(UserAdmin):
-    list_display = ('matricula', 'nome_completo', 'tipo', 'is_active')
+@admin.register(Usuario)
+class UsuarioAdmin(admin.ModelAdmin):
+    list_display = ('username', 'first_name', 'tipo_usuario', 'matricula')
+    search_fields = ('username', 'first_name', 'matricula')
+    list_filter = ('tipo_usuario',)
+    
     fieldsets = (
-        (None, {'fields': ('matricula', 'password')}),
-        ('Personal Info', {'fields': ('nome_completo',)}),
-        ('Permissions', {'fields': ('tipo', 'is_active', 'is_staff', 'is_superuser')}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('matricula', 'nome_completo', 'tipo', 'password1', 'password2'),
+        (None, {'fields': ('username', 'password')}),
+        ('Informações Pessoais', {'fields': ('first_name', 'last_name', 'email')}),
+        ('Permissões', {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
+        ('Dados Específicos', {'fields': ('tipo_usuario', 'matricula')}),
     )
-    ordering = ('matricula',)
-
-admin.site.register(MilitarUser, MilitarUserAdmin)

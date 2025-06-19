@@ -1,46 +1,46 @@
 import os
 import django
-import sys
 
-# Adiciona o diretório pai ao path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'biblioteca.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from django.contrib.auth.hashers import make_password
-from usuarios.models import MilitarUser
+from biblioteca.models import Usuario
 
-def create_users():
-    # Verifica se os usuários já existem
-    if MilitarUser.objects.filter(matricula='170021').exists():
-        print("Usuários já existem. Nada a fazer.")
-        return
+def create_initial_users():
+    # Criar aluno
+    aluno, created = Usuario.objects.get_or_create(
+        username='170021',
+        defaults={
+            'first_name': 'Nicolas',
+            'tipo_usuario': 'aluno',
+            'matricula': '170021',
+            'is_staff': False,
+            'is_superuser': False
+        }
+    )
+    if created:
+        aluno.set_password('TesteTestando')
+        aluno.save()
+        print("Aluno criado com sucesso!")
+    else:
+        print("Aluno já existe")
 
-    # Alunos
-    MilitarUser.objects.create(
-        matricula='170021',
-        password=make_password('TestandoTestando'),
-        nome_completo='Nicolas Lacerda',
-        tipo='aluno'
+    # Criar administrador
+    admin, created = Usuario.objects.get_or_create(
+        username='Admin1',
+        defaults={
+            'first_name': 'Admin',
+            'tipo_usuario': 'admin',
+            'is_staff': True,
+            'is_superuser': True
+        }
     )
-    
-    MilitarUser.objects.create(
-        matricula='008982',
-        password=make_password('TestandoNovamente'),
-        nome_completo='Mariana Lacerda',
-        tipo='aluno'
-    )
-    
-    # Administrador
-    MilitarUser.objects.create(
-        matricula='CMRBOOK1221',
-        password=make_password('18062025'),
-        nome_completo='Administrador do Sistema',
-        tipo='admin',
-        is_staff=True
-    )
-    
-    print("Usuários criados com sucesso!")
+    if created:
+        admin.set_password('19062025')
+        admin.save()
+        print("Administrador criado com sucesso!")
+    else:
+        print("Administrador já existe")
 
 if __name__ == '__main__':
-    create_users()
+    create_initial_users()

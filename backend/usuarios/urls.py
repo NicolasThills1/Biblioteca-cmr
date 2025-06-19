@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import AlunoLoginView, AdminLoginView
+from .views import login_view
 
 urlpatterns = [
-    path('aluno/login/', AlunoLoginView.as_view(), name='aluno-login'),
-    path('admin/login/', AdminLoginView.as_view(), name='admin-login'),
+    path('api/login/', login_view, name='login_api'),
 ]
